@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Template-free Articulated Neural Point Clouds for Reposable View Synthesis. Kinematic warping of neural point clouds for photorealistic image generation.">
+  <meta name="keywords" content="Articulated, Deformable, Point Cloud, Point-based, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Template-free Articulated Neural Point Clouds for Reposable View Synthesis</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <!-- <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Template-free Articulated Neural Point Clouds for Reposable View Synthesis</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://lukas.uzolas.com/">Lukas Uzolas</a>,</span>
+            <span class="author-block">
+              <a href="https://graphics.tudelft.nl/~eisemann/">Elmar Eisemann</a>,</span>
+            <span class="author-block">
+              <a href="https://kellnhofer.xyz/">Petr Kellnhofer</a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">TU Delft</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2305.19065"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/lukasuz/Articulated-Point-NeRF"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+
+
+        <h2 class="title is-3">Abstract</h2>
+
+        <div class="content has-text-centered">
+          <figure>
+            <img src="./static/images/pipeline.png">
+          </figure>
+          
+
+        </div> 
+
+        <div class="content has-text-justified">
+          <p>
+            Dynamic Neural Radiance Fields (NeRFs) achieve remarkable visual quality when synthesizing novel views of time-evolving 3D scenes. However, the common reliance on backward deformation fields makes reanimation of the captured object poses challenging. Moreover, the state of the art dynamic models are often limited by low visual fidelity, long reconstruction time or specificity to narrow application domains.  In this paper, we present a novel method utilizing a point-based representation and Linear Blend Skinning (LBS) to jointly learn a Dynamic NeRF and an associated skeletal model from even sparse multi-view video. Our forward-warping approach achieves state-of-the-art visual fidelity when synthesizing novel views and poses while significantly reducing the necessary learning time when compared to existing work. We demonstrate the versatility of our representation on a variety of articulated objects from common datasets and obtain reposable 3D reconstructions without the need of object-specific skeletal templates.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results</h2>
+        <div class="content">
+          <p>
+            Comparing training speed and qualitative results with <a href="https://nvlabs.github.io/watch-it-move/">Watch-It-Move</a>.
+          </p>
+        </div>
+        <h2 class="title is-4">Reconstruction</h2>
+
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 muted
+                 autoplay
+                 playsinline
+                 loop
+                 width="100%">
+            <source src="./static/videos/atlas_rec.mp4"
+                    type="video/mp4">
+          </video>
+        </div> 
+
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 muted
+                 autoplay
+                 playsinline
+                 loop
+                 width="100%">
+            <source src="./static/videos/trex_rec.mp4"
+                    type="video/mp4">
+          </video>
+        </div> 
+
+        
+        
+        <div class="content has-text-centered">
+          <p>
+            Render of training poses.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-4">Reconstruction & Learned Skinning Weights</h2>
+
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 muted
+                 autoplay
+                 playsinline
+                 loop
+                 width="100%">
+            <source src="./static/videos/spot_rec.mp4"
+                    type="video/mp4">
+          </video>
+        </div> 
+
+
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 muted
+                 autoplay
+                 playsinline
+                 loop
+                 width="100%">
+            <source src="./static/videos/jumpingjacks_rec.mp4"
+                    type="video/mp4">
+          </video>
+        </div> 
+
+        <div class="content has-text-centered">
+          <p>
+            Render of training poses.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <h2 class="title is-4">Simplified Skinning Weights & Reposing </h2>
+
+    <div class="content has-text-centered">
+      <video id="replay-video"
+             muted
+             autoplay
+             playsinline
+             loop
+             width="100%">
+        <source src="./static/videos/spot_repose.mp4"
+                type="video/mp4">
+      </video>
+    </div> 
+
+    <div class="content has-text-centered">
+      <video id="replay-video"
+             muted
+             autoplay
+             playsinline
+             loop
+             width="100%">
+        <source src="./static/videos/jumpingjacks_repose.mp4"
+                type="video/mp4">
+      </video>
+    </div> 
+
+  </div>
+
+  <div class="content has-text-centered">
+    <p>
+      Render of novel poses and unseen views.
+    </p>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre>
+      <code>
+@misc{uzolas2023templatefree,
+  title={Template-free Articulated Neural Point Clouds for Reposable View Synthesis}, 
+  author={Lukas Uzolas and Elmar Eisemann and Petr Kellnhofer},
+  year={2023},
+  eprint={2305.19065},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+      </code>
+    </pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"  class="external-link"
+         href="https://arxiv.org/abs/2305.19065">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/lukasuz/Articulated-Point-NeRF" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-full-width has-text-centered">
+        <div class="content">
+          <p>
+            This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
