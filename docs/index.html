@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="description"
         content="Template-free Articulated Neural Point Clouds for Reposable View Synthesis. Kinematic warping of neural point clouds for photorealistic image generation.">
-  <meta name="keywords" content="Articulated, Deformable, Point Cloud, Point-based, D-NeRF, NeRF">
+  <meta name="keywords" content="Articulated, Deformable, Point Cloud, Point-based, D-NeRF, Dynamic, Point, NeRF">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Template-free Articulated Neural Point Clouds for Reposable View Synthesis</title>
 
@@ -22,7 +22,7 @@
     gtag('config', 'G-PYVRSFMDRL');
   </script> -->
 
-  <link href="https://fonts.googleapis.com/css?family=Roboto"
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab"
         rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -59,7 +59,7 @@
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block">TU Delft</span>
+            <span class="author-block">Delft University of Technology</span>
           </div>
 
           <div class="column has-text-centered">
@@ -148,7 +148,11 @@
           </p>
         </div>
         <h2 class="title is-4">Reconstruction</h2>
-
+        <div class="content has-text-justified">
+          <p>
+            Our method is able to reconstruct the motion of the object faithfully, while utilizing neural points allows for reconstruction of fine details.
+          </p>
+        </div>
         <div class="content has-text-centered">
           <video id="replay-video"
                  muted
@@ -187,7 +191,11 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-4">Reconstruction & Learned Skinning Weights</h2>
-
+        <div class="content has-text-justified">
+          <p>
+            Even without post-processing, object parts are correctly segmented according to the motion present in the scene.
+          </p>
+        </div>
         <div class="content has-text-centered">
           <video id="replay-video"
                  muted
@@ -199,7 +207,6 @@
                     type="video/mp4">
           </video>
         </div> 
-
 
         <div class="content has-text-centered">
           <video id="replay-video"
@@ -223,7 +230,11 @@
     </div>
 
     <h2 class="title is-4">Simplified Skinning Weights & Reposing </h2>
-
+    <div class="content has-text-justified">
+      <p>
+        With a simple post-processing step we are further able to merge over-segmented object parts, yielding a better segmentation of the object and a more controllable 3D representation.
+      </p>
+    </div>
     <div class="content has-text-centered">
       <video id="replay-video"
              muted

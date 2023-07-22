@@ -2,6 +2,10 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+a {
+  color:  #00A6D6;
+}
+
 
 .footer .icon-link {
     font-size: 25px;
@@ -71,7 +75,7 @@ body {
 }
 
 .publication-authors a {
-   color: hsl(204, 86%, 53%) !important;
+   color:  #00A6D6  !important;
 }
 
 .publication-authors a:hover {
