@@ -7,8 +7,6 @@ from tqdm import tqdm
 import cv2
 import blosc
 import pickle
-import clip
-import torchvision
 
 coord_change_mat = np.array([[-1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]])
 
