@@ -73,6 +73,7 @@ full_t_iter= N_iters // 2
 pcd_train_config = dict(
     pose_one_each=False,
     N_iters=N_iters,
+    weight_start_iter=full_t_iter,
     full_t_iter=N_iters // 2,
     lrate_decay=N_iters // 1000,
     # TiNeuVox
