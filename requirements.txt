@@ -19,3 +19,4 @@ scipy
 connected-components-3d
 pandas
 roma
+blosc
