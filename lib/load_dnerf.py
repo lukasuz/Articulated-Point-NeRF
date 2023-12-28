@@ -136,7 +136,7 @@ def load_dnerf_data(basedir, half_res=True, testskip=1, load_test_val=False):
             render_poses.append(np.array(frame['transform_matrix']))
         render_poses = np.array(render_poses).astype(np.float32)
     else:
-        render_poses = torch.stack([pose_spherical(angle, -20.0, 4.0) for angle in np.linspace(-270, -270, len(np.unique(times))+1)[:-1]], 0)
+        render_poses = torch.stack([pose_spherical(angle, -20.0, 4.0) for angle in np.linspace(180, -180, len(np.unique(times))+1)[:-1]], 0)
     render_times = torch.linspace(0., 1., render_poses.shape[0])
     
     if half_res:
