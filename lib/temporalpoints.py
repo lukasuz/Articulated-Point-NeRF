@@ -63,6 +63,7 @@ class TemporalPoints(torch.nn.Module):
         self.register_buffer('xyz_max', torch.Tensor(xyz_max))
         self.eps = torch.tensor(eps)
 
+        self.feat_depth = feat_depth
         self.timebase_pe = timebase_pe
         self.t_dim = 1 + self.timebase_pe * 2
         self.stepsize = stepsize
