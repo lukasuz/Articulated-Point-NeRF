@@ -798,7 +798,7 @@ def get_training_rays_flatten(rgb_tr_ori, times,train_poses, HW, Ks, ndc, invers
     return rgb_tr, times_tr,rays_o_tr, rays_d_tr, viewdirs_tr, imsz
 
 @torch.no_grad()
-def get_training_rays_in_maskcache_samplingTINEUVOX(rgb_tr_ori, masks_tr_ori, times,train_poses, HW, Ks, ndc, model, render_kwargs, img_to_cam, i_train, inverse_y=False, flip_x=False, flip_y=False, **kwargs):
+def get_training_rays_in_maskcache_sampling(rgb_tr_ori, masks_tr_ori, times,train_poses, HW, Ks, ndc, model, render_kwargs, img_to_cam, i_train, inverse_y=False, flip_x=False, flip_y=False, **kwargs):
     print('get_training_rays_in_maskcache_sampling: start')
     # assert len(rgb_tr_ori) == len(train_poses) and len(rgb_tr_ori) == len(Ks) and len(rgb_tr_ori) == len(HW)
     assert len(Ks) == len(train_poses) and len(rgb_tr_ori) == len(HW)

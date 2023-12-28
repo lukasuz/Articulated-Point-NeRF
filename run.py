@@ -440,17 +440,17 @@ def train_pcd(args, cfg, cfg_model, cfg_train, read_path, save_path, data_dict, 
 
     # init batch rays sampler
     rgb_tr, index_to_times, rays_o_tr, rays_d_tr, viewdirs_tr, pix_to_ray, masks_tr, index_to_cam = temporalpoints.get_training_rays_in_maskcache_sampling(
-        rgb_tr_ori=images[i_train],
-        masks_tr_ori=masks[i_train],
+        rgb_tr_ori=images,
+        masks_tr_ori=masks,
         times=times_i_train,
-        train_poses=poses[i_train],
-        Ks=Ks[i_train],
-        HW=HW[i_train],
-        i_train = i_train,
+        train_poses=poses,
+        Ks=Ks,
+        HW=HW,
+        i_train =i_train,
         ndc=cfg.data.ndc, 
         model=tineuvox_model,
         render_kwargs=render_kwargs,
-        img_to_cam = data_dict['img_to_cam'][i_train], 
+        img_to_cam = data_dict['img_to_cam'], 
         **render_kwargs)
 
     unique_times = times_i_train.unique()
@@ -570,7 +570,6 @@ def train_pcd(args, cfg, cfg_model, cfg_train, read_path, save_path, data_dict, 
     for global_step in trange(1+start, 1+cfg_train.N_iters):
         optimizer.zero_grad(set_to_none = True)
 
-            
         ## SAMPLE TIME
         num = min(max((len(unique_times) / cfg_train.full_t_iter) * (global_step), 1), len(unique_times))
         t_max, t_min = get_range(len(unique_times), num)
@@ -865,18 +864,20 @@ def scene_rep_reconstruction(args, cfg, cfg_model, cfg_train, xyz_min, xyz_max, 
     }
 
     # NOTE: No mask cache here, only checking whether ray is within feature volume
-    rgb_tr, times_flatten, rays_o_tr, rays_d_tr, viewdirs_tr, pix_to_ray, masks_tr = tineuvox.get_training_rays_in_maskcache_samplingTINEUVOX(
-                    rgb_tr_ori=images[i_train],
-                    masks_tr_ori=masks[i_train],
-                    times=times_i_train[i_train],
-                    train_poses=poses[i_train],
-                    i_train = i_train,
-                    Ks=Ks[i_train],
-                    HW=HW[i_train],
-                    ndc=cfg.data.ndc, 
-                    model=model, 
-                    render_kwargs=render_kwargs, 
-                    img_to_cam = data_dict['img_to_cam'][i_train],  **render_kwargs)
+    # NOTE: We pass all images, because the data loader only loads the training images
+    rgb_tr, times_flatten, rays_o_tr, rays_d_tr, viewdirs_tr, pix_to_ray, masks_tr = tineuvox.get_training_rays_in_maskcache_sampling(
+        rgb_tr_ori=images,
+        masks_tr_ori=masks,
+        times=times_i_train,
+        train_poses=poses,
+        i_train = i_train,
+        Ks=Ks,
+        HW=HW,
+        ndc=cfg.data.ndc, 
+        model=model, 
+        render_kwargs=render_kwargs, 
+        img_to_cam = data_dict['img_to_cam'],
+        **render_kwargs)
     index_generator = tineuvox.batch_indices_generator(len(rgb_tr), cfg_train.N_rand)
     batch_index_sampler = lambda: next(index_generator)
 
@@ -890,7 +891,6 @@ def scene_rep_reconstruction(args, cfg, cfg_model, cfg_train, xyz_min, xyz_max, 
     global_step = -1
 
     for global_step in trange(1+start, 1+cfg_train.N_iters):
-
         if global_step == args.step_to_half:
             model.feature.data=model.feature.data.half()
         # progress scaling checkpoint
