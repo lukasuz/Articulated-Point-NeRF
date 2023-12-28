@@ -4,7 +4,7 @@ expname = 'spot'
 basedir = './logs/wim/'
 
 data = dict(
-    datadir='./data/WIM/spot/spot',
+    datadir='./data/WIM/spot',
     dataset_type='wim',
     white_bkgd=True,
     canonical_t=0.,
