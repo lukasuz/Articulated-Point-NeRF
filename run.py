@@ -289,9 +289,13 @@ def render_repose(rot_params, render_poses, HW, Ks, ndc, model, render_kwargs,
             render_result_chunks.append(chunk)
 
             if out['joints'] is not None:
-                    if not i in joints.keys():
-                        joints[i] = out['joints'][0].cpu().numpy()
-                        bones = out['bones']          
+                
+                if not render_kwargs['inverse_y']:
+                    out['joints'][:,:,0] = (HW[0,0] - 1) - out['joints'][:,:,0]
+
+                if not i in joints.keys():
+                    joints[i] = out['joints'][0].cpu().numpy()
+                    bones = out['bones']          
 
 
         render_result = {
@@ -311,17 +315,6 @@ def render_repose(rot_params, render_poses, HW, Ks, ndc, model, render_kwargs,
         
         if i==0:
             print('Testing', rgb.shape)
-
-        if gt_imgs is not None and render_factor == 0:
-            if eval_psnr:
-                p = -10. * np.log10(np.mean(np.square(rgb - gt_imgs[i])))
-                psnrs.append(p)
-            if eval_ssim:
-                ssims.append(utils.rgb_ssim(rgb, gt_imgs[i], max_val=1))
-            if eval_lpips_alex:
-                lpips_alex.append(utils.rgb_lpips(rgb, gt_imgs[i], net_name = 'alex', device = c2w.device))
-            if eval_lpips_vgg:
-                lpips_vgg.append(utils.rgb_lpips(rgb, gt_imgs[i], net_name = 'vgg', device = c2w.device))
 
     if len(psnrs):
         if eval_psnr: print('Testing psnr', np.mean(psnrs), '(avg)')
@@ -1297,16 +1290,16 @@ if __name__=='__main__':
                 'bg': 1 if cfg.data.white_bkgd else 0,
                 'stepsize': stepsize,
                 'render_depth': True,
+                'inverse_y': cfg.data.inverse_y,
             },
         }
 
         if args.degree_threshold > 0:
             times = data_dict['times'].unique().unsqueeze(-1)
-            _, _, _, _, prune_bones, _, _, res = model.simplify_skeleton(
+            joints, bones, new_joints, new_bones, prune_bones, _, _, res = model.simplify_skeleton(
                 times, 
                 deg_threshold=args.degree_threshold, 
                 five_percent_heuristic=True,
-                mass_threshold=1e-3, 
                 visualise_canonical=args.visualise_canonical) # If visualise canonical, we will overwrite the bones
         else:
             prune_bones = torch.tensor([])
@@ -1342,7 +1335,7 @@ if __name__=='__main__':
         rgbs, disps, weights, flows = render_viewpoints(
                 render_poses=data_dict['render_poses'],
                 HW=data_dict['HW'][0][None,...].repeat(len(data_dict['render_poses']), 0),
-                Ks=data_dict['Ks'][0][None,...].repeat(len(data_dict['render_poses']), 0),
+                Ks=data_dict['Ks'][0][None,...].repeat_interleave(len(data_dict['render_poses']), 0),
                 render_factor=args.render_video_factor,
                 savedir=testsavedir,
                 test_times=data_dict['render_times'],
@@ -1351,8 +1344,6 @@ if __name__=='__main__':
         
         imageio.mimwrite(os.path.join(testsavedir, 'video.rgb.mp4'), utils.to8b(rgbs), fps=30, quality=8)
         imageio.mimwrite(os.path.join(testsavedir, 'video.disp.mp4'), utils.to8b(disps / np.max(disps)), fps=30, quality =8)
-        if len(flows):
-            imageio.mimwrite(os.path.join(testsavedir, 'video.flows.mp4'), utils.to8b(flows / np.max(flows)), fps=30, quality =8)
         if len(weights) > 0:
             imageio.mimwrite(os.path.join(testsavedir, 'video.weights.mp4'), utils.to8b(weights), fps=30, quality=8)
 
@@ -1365,13 +1356,18 @@ if __name__=='__main__':
         start_scale = 0
         end_scale = 1
         steps = 30
-
-        target_params = torch.rand((len(joints), 4)) * 0.1
+        target_params = torch.randn((len(joints), 4)) * 0.2
         target_params[0] = torch.tensor([0., 0., 0., 0.])
+
+        # NOTE: Here you manually set the bone rotations for animation.
+        # You can check the bones via passing --visualise_canonical
+        # In this example below we rotate bone num 25 around axis 1,0,0 by -0.3 radians
+        # target_params = torch.zeros((len(joints), 4))
+        # target_params[25] = torch.tensor([1., 0., 0., -0.3])
         
         target_params = target_params[None] * torch.linspace(start_scale, end_scale, steps)[:,None,None]
 
-
+        # Create looping animation by inversing the parameters
         target_params = torch.concat([target_params, target_params.flip(0)], dim=0)
         steps = 2 * steps
 
@@ -1382,7 +1378,7 @@ if __name__=='__main__':
         rgbs, disps, weights = render_repose(
             render_poses=data_dict['poses'][0].repeat(steps, 1, 1),
             HW=data_dict['HW'][0][None,...].repeat(steps, 0),
-            Ks=data_dict['Ks'][0][None,...].repeat(steps, 0),
+            Ks=data_dict['Ks'][0][None,...].repeat_interleave(steps, 0),
             render_factor=args.render_video_factor,
             savedir=testsavedir,
             rot_params=target_params,
@@ -1400,10 +1396,15 @@ if __name__=='__main__':
         threshold = args.degree_threshold
 
         skeleton_points = model.skeleton_pcd.detach().cpu().numpy()
+        canonical_pcd = model.canonical_pcd.detach().cpu().numpy()
         weights = model.get_weights().detach().cpu().numpy()
         root = model.joints[0].detach().cpu().numpy()
-        joints = model.joints.detach().cpu().numpy()
-        bones = model.bones
-        canonical_pcd = model.canonical_pcd.detach().cpu().numpy()
-    
-        visualise_skeletonizer(skeleton_points, root, joints, bones, canonical_pcd, weights, save=False, save_path=save_path)
+        try:
+            old_joints = joints
+            old_bones = bones
+        except:
+            new_joints = model.joints.detach().cpu().numpy()
+            new_bones = model.bones
+            old_joints, old_bones = None, None
+        
+        visualise_skeletonizer(skeleton_points, root, new_joints, new_bones, canonical_pcd, weights, old_joints=old_joints, old_bones=old_bones)

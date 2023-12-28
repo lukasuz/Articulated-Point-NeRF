@@ -326,7 +326,7 @@ def create_skeleton(alpha_volume, grid_xyz, bone_length=10., threshold=0.05, sig
 
     return res
 
-def visualise_skeletonizer(skeleton_points, root, joints, bones, pcd, weights):
+def visualise_skeletonizer(skeleton_points, root, joints, bones, pcd, weights, old_joints=None, old_bones=None):
     cs = {
         'root': np.array([[1., 0., 0.]]),
         'joint': np.array([[0., 0., 1.]]),
@@ -335,10 +335,11 @@ def visualise_skeletonizer(skeleton_points, root, joints, bones, pcd, weights):
     }
 
     # Add joints and root
-    joint_points = root.reshape(1, 3)
-    cols = cs['root']
-    joint_points = np.concatenate([joint_points, joints], axis=0)
-    cols = np.concatenate([cols, cs['joint'].repeat(len(joints), axis=0)], axis=0)
+    # joint_points = root.reshape(1, 3)
+    # cols = cs['root']
+    # joint_points = np.concatenate([joint_points, joints], axis=0)
+    joint_points = joints
+    cols = np.concatenate([cs['joint'], cs['joint'].repeat(len(joints) - 1, axis=0)], axis=0)
 
     # Add bones
     col_bones = cs['bone'].repeat(len(bones), axis=0)
@@ -396,13 +397,25 @@ def visualise_skeletonizer(skeleton_points, root, joints, bones, pcd, weights):
         (root, 'root (j0)')
     ]
 
+    joint_to_idx = {}
+    for i in range(1, len(joints)): # skip root, joint == 0
+        if old_joints is not None:
+            x = np.where(np.all(joints[i] == old_joints, axis=1))[0][0]
+        else:
+            x = i
+        joint_to_idx[i] = x
+        labels.append((joints[i], f'j{x}'))
+
     for i in range(len(bones)):
         bs, be = bones[i]
         pos = (joints[bs] + joints[be]) / 2
-        labels.append((pos, f'b{i+1}'))
 
-    for i in range(1, len(joints)): # skip root, joint == 0
-        labels.append((joints[i], f'j{i}'))
+        if old_bones is not None:
+            x =  joint_to_idx[be]
+        else:
+            x = be
+
+        labels.append((pos, f'b{x}'))        
 
     for item in labels:
         scene.add_3d_label(item[0], item[1])

@@ -304,23 +304,23 @@ class TemporalPoints(torch.nn.Module):
         self.joints_to_keep = joints_to_keep
         self.new_bones = new_bones
 
-        if visualise_canonical:
-            self.joints.data = torch.tensor(new_joints)
-            self.bones = new_bones
+        # if visualise_canonical:
+        #     self.joints.data = torch.tensor(new_joints)
+        #     self.bones = new_bones
 
         self.forward_warp.set_rotation_mask(~prune_bones)
         self.forward_warp.set_sibling_mask(torch.tensor(sibling_transfer_rules))
 
         # Solve for pruned weights
-        current_weights = self.get_weights()
-        target_weights = torch.zeros_like(current_weights)
-        for from_idx, to_idx in enumerate(merging_rules): 
-            target_weights[:, to_idx] += current_weights[:, from_idx]
+        # current_weights = self.get_weights()
+        # target_weights = torch.zeros_like(current_weights)
+        # for from_idx, to_idx in enumerate(merging_rules): 
+        #     target_weights[:, to_idx] += current_weights[:, from_idx]
         
-        if update_skeleton:
-            # Remove pruned weights
-            target_weights = target_weights[:, rotations_to_keep]
-            current_weights = self.weights[:, rotations_to_keep]
+        # if update_skeleton:
+        #     # Remove pruned weights
+        #     target_weights = target_weights[:, rotations_to_keep]
+        #     current_weights = self.weights[:, rotations_to_keep]
 
         # Merging Mat approach
         num_weights = self.weights.shape[-1]
@@ -331,12 +331,13 @@ class TemporalPoints(torch.nn.Module):
             mask = (self.flat_merging_rules == i)
             self.merging_mat[i] = torch.eye(num_weights) * mask
 
-        for i in range(len(prune_bones)):
-            if not prune_bones[i]:
-                print(f"Joint {i} kept")
+        # for i in range(len(prune_bones)):
+        #     if not prune_bones[i]:
+        #         print(f"Joint {i} kept")
         
-        print(f"frozen joints {prune_bones.sum()} from {len(prune_bones)} ")
-        print(f"Pruned {len(joints) - len(new_joints)} joints")
+        print(f"Frozen joints/weights: {prune_bones.sum()} of {len(prune_bones)} ")
+        print(f"Joints kept: {[i for i, v in enumerate(~prune_bones) if v]}")
+        print(f"Actually pruned joints: {len(joints) - len(new_joints)} of {len(joints)}")
 
         return joints, bones, new_joints, new_bones, prune_bones, merging_rules, rotations_to_keep, res
     
