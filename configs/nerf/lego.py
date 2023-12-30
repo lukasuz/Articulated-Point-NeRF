@@ -6,7 +6,6 @@ basedir = './logs/dnerf/'
 data = dict(
     datadir='./data/dnerf/lego',
     dataset_type='dnerf',
-    white_bkgd=True,
     canonical_t=1.,
     inverse_y=False,
     flip_x=False,

@@ -158,14 +158,10 @@ def load_zju(pickle_path, video_len = 300, size: int = 512, compression=True, bg
 
     H, W = imgs.shape[1], imgs.shape[2]
     render_poses = torch.tensor(poses[3]).unsqueeze(0).expand(400,-1,-1).float()
-
-    radius = 2.5
-    y_offset = np.mean(poses[:,2,3])
     
-    render_poses = torch.stack([pose_spherical(angle, -20.0, radius) for angle in np.linspace(180,-180, 40+1)[:-1]], 0)
-    render_poses[:,2,3] += y_offset
-    # offset = torch.tensor([0,0,0])
-    # render_poses[:,:3,-1] += offset
+    # render_poses = torch.stack([pose_spherical(angle, -20.0, radius) for angle in np.linspace(180,-180, 40+1)[:-1]], 0)
+    # render_poses = poses[0].repeat_interleave(40, 0)
+    render_poses = torch.tensor(poses[None, 0].repeat(80, 0), dtype=torch.float32)
 
     render_times = torch.linspace(0., 1., render_poses.shape[0])
 

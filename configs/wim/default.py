@@ -24,6 +24,7 @@ data = dict(
 ''' Template of training options
 '''
 train_config = dict(
+    bg_col=1,
     N_iters=40000,                # number of optimization steps
     N_rand=4096,                  # batch size (number of random rays per optimization step)
     lrate_feature=8e-2,           # lr of  voxel grid
@@ -33,7 +34,7 @@ train_config = dict(
     lrate_densitynet=8e-4,
     lrate_timenet=8e-4,
     lrate_rgbnet=8e-4,           # lr of the mlp  
-    lrate_decay=20,               # lr decay by 0.1 after every lrate_decay*1000 steps
+    lrate_decay=40,               # lr decay by 0.1 after every lrate_decay*1000 steps
     ray_sampler='in_maskcache',        # ray sampling strategies
     weight_main=1.0,              # weight of photometric loss
     weight_entropy_last=0.001,
@@ -45,8 +46,6 @@ train_config = dict(
     weight_tv_feature=0,
     pg_scale=[2000, 4000, 6000],
     weight_distortion=5e-2,
-    weight_inv=0,
-    weight_delta=0,
     weight_mask_loss=0,
     skip_zero_grad_fields=['feature']
 )
@@ -72,6 +71,7 @@ N_iters = 160000
 after_train_iter = N_iters - (N_iters // 10)
 after_train_iter = 20000000000
 pcd_train_config = dict(
+    bg_col=1,
     pose_one_each=False,
     N_iters=N_iters,
     full_t_iter=N_iters // 2,
@@ -122,8 +122,6 @@ pcd_model_and_render = dict(
     pcd_density_threshold=0.05,
     skeleton_density_threshold=0.05,
     canonical_pcd_num=1e+4,
-    other_pcd_num=5e+3,
-    degree_threshold=15
 )
 
 del deepcopy

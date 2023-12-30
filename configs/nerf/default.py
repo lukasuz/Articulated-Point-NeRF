@@ -24,6 +24,7 @@ data = dict(
 ''' Template of training options
 '''
 train_config = dict(
+    bg_col=1,
     N_iters=20000,                # number of optimization steps
     N_rand=4096,                  # batch size (number of random rays per optimization step)
     lrate_feature=8e-2,           # lr of  voxel grid
@@ -45,11 +46,8 @@ train_config = dict(
     weight_tv_feature=0,
     pg_scale=[2000, 4000, 6000],
     weight_distortion=5e-2,
-    weight_inv=0,
-    weight_delta=0,
     weight_mask_loss=0,
     skip_zero_grad_fields=['feature'],
-    unobserved_view_reg=False
 )
 
 ''' Template of model and rendering options
@@ -73,6 +71,7 @@ model_and_render = dict(
 '''
 N_iters = 160000
 pcd_train_config = dict(
+    bg_col=1,
     pose_one_each=True,
     N_iters=N_iters,
     full_t_iter=N_iters // 2,

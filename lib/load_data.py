@@ -9,7 +9,7 @@ from .load_robot import load_robot
 from .load_zju import load_zju
 
 
-def load_data(args, cfg, load_test_val=False):
+def load_data(args, cfg, load_test_val=False, bg_col=1):
 
     K, depths = None, None
     times = None
@@ -37,7 +37,7 @@ def load_data(args, cfg, load_test_val=False):
         far = 6.
 
     elif args.dataset_type == 'zju':
-        images, poses, K, times, render_poses, render_times, render_intrinsics, hw, i_split, img_to_cam, masks, embeddings = load_zju(args.datadir, video_len=cfg.data.video_len, step=1, load_test_val=load_test_val)
+        images, poses, K, times, render_poses, render_times, render_intrinsics, hw, i_split, img_to_cam, masks, embeddings = load_zju(args.datadir, video_len=cfg.data.video_len, step=1, load_test_val=load_test_val, bg_col=bg_col)
         print('Loaded ZJU', images.shape, render_poses.shape, render_intrinsics.shape, hw, args.datadir)
         i_train, i_val, i_test = i_split
 

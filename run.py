@@ -379,7 +379,11 @@ def load_everything(args, cfg, use_cache=False, overwrite=False):
             data_dict = pickle.load(f)
         return data_dict
 
-    data_dict = load_data(cfg.data, cfg, args.load_test_val)
+    try:
+        bg_col = cfg.train_config.bg_col
+    except:
+        bg_col = None
+    data_dict = load_data(cfg.data, cfg, args.load_test_val, bg_col=bg_col)
     # remove useless field
     kept_keys = {
             'hwf', 'HW', 'Ks', 'near', 'far',
@@ -431,7 +435,7 @@ def train_pcd(args, cfg, cfg_model, cfg_train, read_path, save_path, data_dict, 
     render_kwargs = {
         'near': near,
         'far': far,
-        'bg': 1 if cfg.data.white_bkgd else 0,
+        'bg': cfg.train_config.bg_col,
         'stepsize': cfg_model.stepsize,
         'inverse_y': cfg.data.inverse_y, 
         'flip_x': cfg.data.flip_x,
@@ -856,7 +860,7 @@ def scene_rep_reconstruction(args, cfg, cfg_model, cfg_train, xyz_min, xyz_max, 
     render_kwargs = {
         'near': near,
         'far': far,
-        'bg': 1 if cfg.data.white_bkgd else 0,
+        'bg': cfg.train_config.bg_col,
         'stepsize': cfg_model.stepsize,
         'inverse_y': cfg.data.inverse_y, 
         'flip_x': cfg.data.flip_x,
@@ -1045,7 +1049,7 @@ def train(args, cfg, read_path, save_path, data_dict=None, stages=[1,2]):
             'render_kwargs': {
                 'near': data_dict['near'],
                 'far': data_dict['far'],
-                'bg': 1 if cfg.data.white_bkgd else 0,
+                'bg': cfg.pcd_train_config.bg_col,
                 'stepsize': stepsize,
                 'render_depth': True,
             },
@@ -1068,7 +1072,8 @@ def train(args, cfg, read_path, save_path, data_dict=None, stages=[1,2]):
         train_pcd(
             args=args, cfg=cfg, 
             cfg_model=cfg.pcd_model_and_render, cfg_train=cfg.pcd_train_config, 
-            read_path=read_path,save_path=save_path, data_dict=data_dict, tineuvox_model=model, canonical_t=canonical_t, tensorboard_path=tensorboard_path)
+            read_path=read_path,save_path=save_path, data_dict=data_dict, tineuvox_model=model,
+            canonical_t=canonical_t, tensorboard_path=tensorboard_path)
         eps_loop = time.time() - eps_time
         eps_time_str = f'{eps_loop//3600:02.0f}:{eps_loop//60%60:02.0f}:{eps_loop%60:02.0f}'
         print('train: finish (eps time', eps_time_str, ')')
@@ -1287,7 +1292,7 @@ if __name__=='__main__':
             'render_kwargs': {
                 'near': near,
                 'far': far,
-                'bg': 1 if cfg.data.white_bkgd else 0,
+                'bg': cfg.train_config.bg_col,
                 'stepsize': stepsize,
                 'render_depth': True,
                 'inverse_y': cfg.data.inverse_y,

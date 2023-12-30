@@ -6,7 +6,6 @@ basedir = './logs/zju/'
 data = dict(
     datadir='./data/zju/377/cache_train.pickle',
     dataset_type='zju',
-    white_bkgd=False,
     # Training data
     inverse_y=True,
     canonical_t=0.,

@@ -24,6 +24,7 @@ data = dict(
 ''' Template of training options
 '''
 train_config = dict(
+    bg_col=0,
     N_iters=40000,                # number of optimization steps
     N_rand=4096,                  # batch size (number of random rays per optimization step)
     lrate_feature=8e-2,           # lr of  voxel grid
@@ -45,11 +46,8 @@ train_config = dict(
     weight_tv_feature=0,
     pg_scale=[2000, 4000, 6000],
     weight_distortion=5e-2,
-    weight_inv=0,
-    weight_delta=0,
-    weight_mask_loss=0,
+    weight_mask_loss=5e-2,
     skip_zero_grad_fields=['feature'],
-    unobserved_view_reg=False
 )
 
 ''' Template of model and rendering options
@@ -71,6 +69,7 @@ model_and_render = dict(
 N_iters = 160000 * 2#  160000
 full_t_iter= N_iters // 2
 pcd_train_config = dict(
+    bg_col=0,
     pose_one_each=False,
     N_iters=N_iters,
     weight_start_iter=full_t_iter,
@@ -122,7 +121,6 @@ pcd_model_and_render = dict(
     pcd_density_threshold=0.05,
     skeleton_density_threshold=0.1,
     canonical_pcd_num=1e+4,
-    degree_threshold=15
 )
 
 del deepcopy

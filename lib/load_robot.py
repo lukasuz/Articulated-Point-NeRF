@@ -166,7 +166,7 @@ def load_robot(data_dir, video_len = 300, size: int = 512, test=False, skip_imag
 
     H, W = imgs.shape[1], imgs.shape[2]
     radius = np.sqrt((poses[:,:,-1]**2).sum(-1)).mean()
-    render_poses = torch.stack([pose_spherical(angle, -20.0, radius) for angle in np.linspace(0, 360, 40+1)[:-1]], 0)
+    render_poses = torch.stack([pose_spherical(angle, -20.0, radius) for angle in np.linspace(0, 360, 180+1)[:-1]], 0)
     render_times = torch.linspace(0., 1., render_poses.shape[0])
 
     render_intrinsics = np.repeat(np.expand_dims(intrinsics[0], 0), render_poses.shape[0], 0)

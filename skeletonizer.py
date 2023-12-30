@@ -206,7 +206,7 @@ def preprocess_volume(alpha_volume, threshold, sigma=1):
     
     return binary_volume.astype(bool)
 
-def create_skeleton(alpha_volume, grid_xyz, bone_length=10., threshold=0.05, sigma=0, weight_theta=0.1, bone_heursitic=False):
+def create_skeleton(alpha_volume, grid_xyz, bone_length=10., threshold=0.05, sigma=0, weight_theta=0.1, bone_heursitic=True):
     """
     Arguments:
         alpha_volume: LxMxN np.array, alpha volume before thresholding

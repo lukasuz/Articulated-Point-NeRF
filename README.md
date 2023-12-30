@@ -99,14 +99,8 @@ You will be able to find the point cloud and skeleton .pcd files saved in the co
 This will generate a reposed video sequence with random bone rotations. Check the code to see how to manually set the bone rotations.
 
 
-## Known Errors
-- Some unused and missing requirements
-- Attribute error in TemporalPoints
-- WIM dataloader intrininsics shape
-
-
 ## ToDos:
-- [ ] Fix known errors (Will do in the next couple of days, 21.12.23)
+- [x] Fix known errors (Will do in the next couple of days, 21.12.23)
 - [ ] Add stand-alone instructions for initial kinematic model extraction based on point cloud 
 
 
