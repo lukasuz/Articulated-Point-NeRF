@@ -423,8 +423,8 @@ def visualise_skeletonizer(skeleton_points, root, joints, bones, pcd, weights, o
     gui.Application.instance.run()
 
 if __name__ == "__main__":
-    alpha_volume = np.load('./alpha_volume_f16.npy')
-    with open("grid.txt", 'r') as f:  
+    alpha_volume = np.load('./data/alpha_volume_f16.npy')
+    with open("./data/grid.txt", 'r') as f:  
         lines = f.readlines()
         for i in range(len(lines)):
             lines[i] = np.array(lines[i].replace('\n', '').split(','), dtype=float)
@@ -445,5 +445,5 @@ if __name__ == "__main__":
         np.expand_dims(zv, axis=-1)
     ], axis=-1)
 
-    res = create_skeleton(alpha_volume, grid_xyz, bone_length=10., sigma=0.5, weight_theta=0.05)
+    res = create_skeleton(alpha_volume, grid_xyz, bone_length=10., sigma=1, weight_theta=0.03)
     visualise_skeletonizer(*res.values())

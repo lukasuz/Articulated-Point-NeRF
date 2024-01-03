@@ -74,6 +74,11 @@ Download the datasets ([dnerf](https://github.com/albertpumarola/D-NeRF), [wim](
 
 Note that you have to follow the pre-processing step as defined in [wim](https://github.com/NVlabs/watch-it-move) for the ZJU data to obtain the pickle files.
 
+
+### Kinematic Model Initialization Only
+If you are only interested in extraction of the initial kinematic model (skeleton incl. skinning weights based on point-to-bone distance) check the _skeletonizer.py_ script. You can run that script with the sample data provided [here](https://drive.google.com/drive/folders/1iaHwsph0Z4RiS3Ugdcuz7D6NIE06jbHY?usp=sharing). The function generally expects a 3D density volume, for specifics please check the script.
+
+
 ### Train and Render
 
 **Train backbone & PCD representation:**
@@ -101,12 +106,12 @@ This will generate a reposed video sequence with random bone rotations. Check th
 
 ## ToDos:
 - [x] Fix known errors (Will do in the next couple of days, 21.12.23)
-- [ ] Add stand-alone instructions for initial kinematic model extraction based on point cloud 
+- [x] Add stand-alone instructions for initial kinematic model extraction based on point cloud 
 
 
 ## Acknowledgements
 
-This repository is partially based on [TiNeuVox](https://github.com/hustvl/TiNeuVox), [DirectVoxGO](https://github.com/sunset1995/directvoxgo), [D-NeRF](https://github.com/albertpumarola/D-NeRF). Thanks for their works.
+This repository is partially based on [TiNeuVox](https://github.com/hustvl/TiNeuVox), [DirectVoxGO](https://github.com/sunset1995/directvoxgo), and [D-NeRF](https://github.com/albertpumarola/D-NeRF). Thanks for their works.
 
 
 
