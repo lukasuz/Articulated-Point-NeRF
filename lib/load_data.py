@@ -22,7 +22,7 @@ def load_data(args, cfg, load_test_val=False, bg_col=1):
         near = 2.
         far = 6.
         if images.shape[-1] == 4:
-            if args.white_bkgd:
+            if bg_col == 1:
                 images = images[...,:3]*images[...,-1:] + (1.-images[...,-1:])
             else:
                 images = images[...,:3]*images[...,-1:]
