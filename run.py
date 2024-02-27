@@ -10,7 +10,7 @@ import math
 import pickle
 
 import imageio
-import mmcv
+import mmengine
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -1243,7 +1243,7 @@ if __name__=='__main__':
     # load setup
     parser = config_parser()
     args = parser.parse_args()
-    cfg = mmcv.Config.fromfile(args.config)
+    cfg = mmengine.Config.fromfile(args.config)
     # init enviroment
     if torch.cuda.is_available():
         torch.set_default_tensor_type('torch.cuda.FloatTensor')

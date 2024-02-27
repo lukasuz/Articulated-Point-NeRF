@@ -3,7 +3,9 @@ torch_scatter
 scipy
 lpips
 tqdm
-mmcv
+mmengine
+open3d
+moviepy
 opencv-python
 imageio
 imageio-ffmpeg
