@@ -118,10 +118,11 @@ This repository is partially based on [TiNeuVox](https://github.com/hustvl/TiNeu
 ## Citation
 
 ```
-@article{uzolas2023template,
-  title={Template-free Articulated Neural Point Clouds for Reposable View Synthesis},
+@article{uzolas2024template,
+  title={Template-free articulated neural point clouds for reposable view synthesis},
   author={Uzolas, Lukas and Eisemann, Elmar and Kellnhofer, Petr},
-  journal={arXiv preprint arXiv:2305.19065},
-  year={2023}
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2024}
 }
 ```
